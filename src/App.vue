@@ -3,8 +3,8 @@
     <Header/>
     <div id="container">
       <div v-if="!gameOver" id="in-game">
-        <generate-number @estrai-numero="estraiNumeroTabellone" @game-over="getGameOver"></generate-number>
-        <tabellone :numeroEstratto="numeroEstrattoTabellone"></tabellone>
+        <generate-number @estrai-numero="estraiNumeroTabellone" @game-over="getGameOver" @restart-game="restartGame"></generate-number>
+        <tabellone :numeroEstratto="numeroEstrattoTabellone" :restartTab="restart"></tabellone>
       </div>
       <div v-else id="game-over">
         <h2>Game Over</h2>
@@ -29,14 +29,18 @@ export default {
     return {
       numeroEstrattoTabellone: '',
       gameOver: false,
+      restart: false,
     }
   },
   methods: {
     estraiNumeroTabellone(num) { //Prendo numero al click su "Estrai numero"(Dato preso dal component "GenerateNumber con emits")
       this.numeroEstrattoTabellone = num; //Assegno dato a variabile locale
     },
-    getGameOver(val) { //Prendo valore inviato con $emits da GeneratNumber
+    getGameOver(val) { //Prendo valore inviato con $emits da GenerateNumber
       this.gameOver = val; //Setto valore a variabile locale
+    },
+    restartGame(val) {//Prendo valore inviato con $emits da GenerateNumber
+      this.restart = val; //Setto valore a variabile locale
     }
   },
 }

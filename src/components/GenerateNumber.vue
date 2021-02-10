@@ -5,6 +5,9 @@
             <p v-if="numeroEstratto != ''" class="last-estr-par">Ultimo numero estratto</p>
             <p class="last-estr-num"> {{ numeroEstratto }} </p>
         </div>
+        <div id="restart">
+            <button @click="restartGame">Pulisci Tabellone</button>
+        </div>
     </div>
 </template>
 
@@ -16,11 +19,17 @@ export default {
         numeroEstratto: '',
         numeriEstratti: [],
         gameOver: false,
+        restart: false,
         }
   },
   methods: {
         estraiNumero() {
             var flag = false; //Flag che verifica estrazione di un numero non già uscito
+
+            if(this.restart) { //Se restart è settato su "true"
+                this.restart = false;
+                this.$emit('restart-game', this.restart); //Dico al padre che restart è false
+            }
 
             do { //Ciclo do while finchè..
                 this.numeroEstratto = Math.floor(Math.random() * (90 - 1 + 1) ) + 1; //Estraggo un numero casuale da 1 a 90
@@ -32,6 +41,12 @@ export default {
                     flag = true; //Setto flag a true, terminando il ciclo
                 }
             } while(flag === false); //Il numero è già stato estratto
+        },
+        restartGame() {
+            this.numeriEstratti = [];
+            this.numeroEstratto = '';
+            this.restart = true;
+            this.$emit('restart-game', this.restart); //Invio segnale di restart
         }
   },
    watch: {
@@ -51,11 +66,23 @@ export default {
 <style scoped>
 #generate-num {
     margin-bottom: 30px;
+    height: 130px;
 }
 
 #num-estr {
     display: inline-block;
     margin-left: 45px;
+}
+
+#restart {
+    display: inline-block;
+    position: relative;
+    left: 50%;
+}
+
+#restart button {
+    background-color: rgb(99, 209, 99);
+    border: none;
 }
 
 button {
@@ -75,16 +102,18 @@ button {
 
 button:hover {
     background-color:rgba(204,81,81,0.4);
-    transform: scale(0.98);
+    transform: scale(0.95);
+}
+
+.last-estr-par, .last-estr-num  {
+    font-weight: bold;
 }
 
 .last-estr-par {
     font-size: 22px;
-    font-weight: bold;
 }
 
 .last-estr-num {
     font-size: 28px;
-    font-weight: bold;
 }
 </style>

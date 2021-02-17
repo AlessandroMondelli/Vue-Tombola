@@ -4,6 +4,7 @@
     <div id="container">
       <div v-if="!gameOver" id="in-game">
         <generate-number @estrai-numero="estraiNumeroTabellone" @game-over="getGameOver" @restart-game="restartGame"></generate-number>
+        <tabella></tabella>
         <tabellone :numeroEstratto="numeroEstrattoTabellone" :restartTab="restart"></tabellone>
       </div>
       <div v-else id="game-over">
@@ -17,6 +18,7 @@
 import Header from './components/Header.vue';
 import GenerateNumber from './components/GenerateNumber.vue';
 import Tabellone from './components/Tabellone.vue';
+import Tabella from './components/Tabella.vue'
 
 export default {
   name: 'App',
@@ -24,6 +26,7 @@ export default {
     Header,
     GenerateNumber,
     Tabellone,
+    Tabella,
   },
   data() {
     return {

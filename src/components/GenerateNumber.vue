@@ -1,8 +1,8 @@
 <template>
     <div id="generate-num">
         <button @click="estraiNumero">Estrai un numero</button>
-        <div id="num-estr">
-            <p v-if="numeroEstratto != ''" class="last-estr-par">Ultimo numero estratto</p>
+        <div v-if="numeroEstratto != ''" id="num-estr">
+            <p class="last-estr-par">Ultimo numero estratto</p>
             <p class="last-estr-num"> {{ numeroEstratto }} </p>
         </div>
         <div id="restart">
@@ -16,10 +16,10 @@ export default {
   name: 'GenerateNumber',
   data() {
         return {
-        numeroEstratto: '',
-        numeriEstratti: [],
-        gameOver: false,
-        restart: false,
+            numeroEstratto: '',
+            numeriEstratti: [],
+            gameOver: false,
+            restart: false,
         }
   },
   methods: {
@@ -66,7 +66,6 @@ export default {
 <style scoped>
 #generate-num {
     margin-bottom: 30px;
-    height: 130px;
 }
 
 #num-estr {
@@ -86,18 +85,8 @@ export default {
 }
 
 button {
-    display: inline-block;
-    vertical-align: text-bottom;
-    background: none;
-	color: white;
 	border: 1px solid #CC5151;
-    border-radius: 5px;
     background-color:rgb(204,81,81);
-	padding: 20px;
-	font: inherit;
-	cursor: pointer;
-	outline: inherit;
-    transition: 0.2s;
 }
 
 button:hover {

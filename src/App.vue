@@ -4,7 +4,7 @@
     <div id="container">
       <div v-if="!gameOver" id="in-game">
         <generate-number @estrai-numero="estraiNumeroTabellone" @game-over="getGameOver" @restart-game="restartGame"></generate-number>
-        <tabella></tabella>
+        <tabella :numeroEstrattoTabellina="numeroEstrattoTabellone"></tabella>
         <tabellone :numeroEstratto="numeroEstrattoTabellone" :restartTab="restart"></tabellone>
       </div>
       <div v-else id="game-over">
@@ -63,5 +63,18 @@ html {
   margin: auto;
   padding-top: 50px;
   height: 70vh;
+}
+
+button {
+  display: inline-block;
+  vertical-align: text-bottom;
+  background: none;
+	color: white;
+  border-radius: 5px;
+	padding: 20px;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+  transition: 0.2s;
 }
 </style>

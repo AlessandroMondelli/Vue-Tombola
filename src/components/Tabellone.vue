@@ -1,5 +1,6 @@
 <template>
     <div id="tabellone">
+        <h2>Tabellone</h2>
         <div :id="'num' + num" class="numero-cella" v-for="num in 90" :key="num">{{ num }}</div>
     </div>
 </template>
@@ -34,11 +35,22 @@ export default {
 </script>
 
 <style scoped>
+    #tabellone {
+        width: 75%;
+        margin: auto;
+        text-align: center;   
+    }
+
+    h2 {
+        text-align: center;
+        font-size: 30px;
+    }
+
     .numero-cella {
         border: 1px solid black;
         padding: 25px 30px;
         display: inline-block;
-        width: 100px;
+        width: 55px;
     }
 
     .pescato {

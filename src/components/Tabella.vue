@@ -8,7 +8,9 @@
                 <div :id="'pos' + num" class="numero-tabellina" v-for="num in 9" :key="num"></div>
             </div> -->
             <h2>La tua Tabella</h2>
-            <div class="cella-tabellina" :id="numTabella" v-for="numTabella in tabellina" :key="numTabella">{{ numTabella }}</div>
+            <div id="tab-wrapper">
+                <div class="cella-tabellina" :id="numTabella" v-for="numTabella in tabellina" :key="numTabella">{{ numTabella }}</div>
+            </div>
         </div>
     </div>
     </div>
@@ -34,21 +36,37 @@ export default {
     },
     methods: {
         createTab() {
-            for (var i = 0; i < 15; i++) {
-                var flag = false; //Flag che verifica estrazione di un numero non già uscito
+            do { //Ciclo do while finchè..
+                var numeroTabellina = Math.floor(Math.random() * (90 - 1 + 1) ) + 1; //Estraggo un numero casuale da 1 a 90
+                console.log(numeroTabellina);
+                if ((!this.tabellina.includes(numeroTabellina))) { //Se il numero non è incluso nell'array dei numeri estratti
+                    var count = 0;
+                    var numeroTabFloor = Math.floor((numeroTabellina / 10) * 10); //Prendo decina arrotondata del numero estratto
 
-                
-                do { //Ciclo do while finchè..
-                    var numeroTabellina = Math.floor(Math.random() * (90 - 1 + 1) ) + 1; //Estraggo un numero casuale da 1 a 90
+                    var foundRange = false //Variabile che verifica se è stato trovato o meno il range di numeri
 
-                    if ((!this.tabellina.includes(numeroTabellina))) { //Se il numero non è incluso nell'array dei numeri estratti
-                        this.tabellina.push(numeroTabellina); //Inserisco numero in array
-                        flag = true; //Setto flag a true, terminando il ciclo
+                    for (var j = 0, arrayLength = this.tabellina.length; j <= arrayLength; j++) { //Scorro array presente fino a questo momento
+                        if((this.tabellina[j] >= numeroTabFloor) && (this.tabellina[j] < (numeroTabFloor + 11)) && !this.tabellina.includes(numeroTabellina)) { //Se il numero presente all'indice appena passato si trova tra la decina estratta
+                            count++; //Aumento contatore
 
-                        this.tabellina.sort((a, b) => a - b);
+                            if(count < 3) { //Se il contatore è minore di 3
+                                this.tabellina.push(numeroTabellina); //Inserisco numero in array
+                                console.log("Pushato 1");
+                            }
+                            
+                            foundRange = true; //Segnalo che il Range numeri è stato trovato
+                        }
                     }
-                } while(flag === false); //Il numero è già stato estratto
-            }
+
+                    if(foundRange === false) { //Se non è stato trovato
+                        this.tabellina.push(numeroTabellina); //Inserisco numero in array
+                        console.log("Pushato 2");
+                    }
+
+                    this.tabellina.sort((a, b) => a - b);
+                }
+
+            } while(this.tabellina.length < 15); //l'array ha meno di 15 elementi
         },
         dragMouseDown: function (event) {
             event.preventDefault()
@@ -123,6 +141,13 @@ export default {
         border: 1px solid black;
         width: 10.5%;
         padding: 20px 0;
+    }
+
+    #tab-wrapper {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        max-height: 200px;
     }
 
     #tabellina {

@@ -38,35 +38,69 @@ export default {
         createTab() {
             do { //Ciclo do while finchè..
                 var numeroTabellina = Math.floor(Math.random() * (90 - 1 + 1) ) + 1; //Estraggo un numero casuale da 1 a 90
-                console.log(numeroTabellina);
-                if ((!this.tabellina.includes(numeroTabellina))) { //Se il numero non è incluso nell'array dei numeri estratti
-                    var count = 0;
-                    var numeroTabFloor = Math.floor((numeroTabellina / 10) * 10); //Prendo decina arrotondata del numero estratto
+                console.log("Numero Estratto: ", numeroTabellina);
 
-                    var foundRange = false //Variabile che verifica se è stato trovato o meno il range di numeri
+                if (!this.tabellina.includes(numeroTabellina)) { //Se il numero non è incluso nell'array dei numeri estratti
+                    if(this.tabellina.length == 0) {
+                        this.tabellina.push(numeroTabellina);
+                    } else {
+                        var numeroTabFloor = 0;
 
-                    for (var j = 0, arrayLength = this.tabellina.length; j <= arrayLength; j++) { //Scorro array presente fino a questo momento
-                        if((this.tabellina[j] >= numeroTabFloor) && (this.tabellina[j] < (numeroTabFloor + 11)) && !this.tabellina.includes(numeroTabellina)) { //Se il numero presente all'indice appena passato si trova tra la decina estratta
-                            count++; //Aumento contatore
+                        if (numeroTabellina >= 10) {
+                            var numeroTabString = String(numeroTabellina).charAt(0); //Trasform in stringa il numero e prendo il primo carattere
+                            numeroTabFloor = Number(numeroTabString); //Trasformo di nuovo il carattere in numero
+                        } else if (numeroTabellina < 10 ) {
+                            numeroTabFloor = 0;
+                        } else if (numeroTabellina == 90) {
+                            numeroTabFloor = 8;
+                        }
+                        
+                        var foundRange = false //Variabile che verifica se è stato trovato o meno il range di numeri
+
+                        if(numeroTabFloor == 0) {
+                            var count = 0; //Contatore numero di decine trovate
+                            for(var i = 0, arrayLength = this.tabellina.length; i < arrayLength; i++) {
+                                if(this.tabellina[i] < 10) {
+                                    count++;
+                                } 
+                            }   
 
                             if(count < 3) { //Se il contatore è minore di 3
                                 this.tabellina.push(numeroTabellina); //Inserisco numero in array
-                                console.log("Pushato 1");
+                                foundRange = true; //Segnalo che il Range numeri è stato trovato
+                            } else if(count >= 3) {
+                                foundRange = true; //Segnalo che il Range numeri è stato trovato
                             }
+
+                        } else {
+                            var countJ = 0; //Contatore numero di decine trovate
+                             for(var j = 0, arrayLengthJ = this.tabellina.length; j < arrayLengthJ; j++) {
+                                var tabellinaFloorStringa = String(this.tabellina[j]).charAt(0);
+                                var tabellinaFloorNum = Number(tabellinaFloorStringa);
+
+                                if(tabellinaFloorNum == numeroTabFloor) {
+                                    countJ++;
+                                }
+                            }  
                             
-                            foundRange = true; //Segnalo che il Range numeri è stato trovato
+                            console.log("Numero trovati: ", countJ);
+                            if(countJ < 3) { //Se il contatore è minore di 3
+                                console.log("Pushato con trovati: ",numeroTabellina);
+                                this.tabellina.push(numeroTabellina); //Inserisco numero in array
+                                foundRange = true; //Segnalo che il Range numeri è stato trovato
+                            } else if(countJ >= 3) {
+                                foundRange = true; //Segnalo che il Range numeri è stato trovato
+                            }
                         }
-                    }
 
-                    if(foundRange === false) { //Se non è stato trovato
-                        this.tabellina.push(numeroTabellina); //Inserisco numero in array
-                        console.log("Pushato 2");
-                    }
-
-                    this.tabellina.sort((a, b) => a - b);
+                        if(foundRange == false) { //Se non è stato trovato
+                            this.tabellina.push(numeroTabellina); //Inserisco numero in array
+                        }
+                    }     
                 }
-
             } while(this.tabellina.length < 15); //l'array ha meno di 15 elementi
+
+            this.tabellina.sort((a, b) => a - b);
         },
         dragMouseDown: function (event) {
             event.preventDefault()
@@ -93,7 +127,6 @@ export default {
     },
     watch: {
         numeroEstrattoTabellina: function(newVal) { //Guardo numero estratto tabellone
-            console.log('1');
             if(this.tabellina.includes(newVal)) { //Se è presente nella tabellina
                 var numPescatoTabellina = document.getElementById(newVal); //Cerco elemento con id = al numero pescato
                 numPescatoTabellina.classList.add("pescato"); //Aggiungo classe css "Pescato"

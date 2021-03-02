@@ -1,12 +1,9 @@
 <template>
     <div id="create-tabellina">
-    <button id="gen-tabella" @click="createTab(),genTab = !genTab" v-if="!genTab">Genera Tabella</button>
-    <div v-else id="tabella" ref="draggableContainer" class="draggable-container">
+    <button id="gen-tabella" @click="createTab(),genTab = !genTab" v-if="!gameStart && !genTab">Genera Tabella</button>
+    <div v-if="genTab" id="tabella" ref="draggableContainer" class="draggable-container">
         <div id="tabellina"  class="draggable-header" @mousedown="dragMouseDown">
             <button id="el-tabella" @click="tabellina = [],genTab = !genTab">Elimina Tabella</button>
-            <!--<div :id="'riga' + num" class="riga-tabellina" v-for="num in 3" :key="num"> 
-                <div :id="'pos' + num" class="numero-tabellina" v-for="num in 9" :key="num"></div>
-            </div> -->
             <h2>La tua Tabella</h2>
             <div id="tab-wrapper">
                 <div class="cella-tabellina" :id="numTabella" v-for="numTabella in tabellina" :key="numTabella">{{ numTabella }}</div>
@@ -19,10 +16,11 @@
 <script>
 export default {
     name: 'Tabella',
-    props:['numeroEstrattoTabellina'],
+    props:['numeroEstrattoTabellina','gameStart'],
     data() {
         return {
             numEstratto: this.numeroEstrattoTabellina,
+            gameStarted: this.gameStart,
             resTab: false,
             genTab: false,
             tabellina: [],
@@ -38,7 +36,6 @@ export default {
         createTab() {
             do { //Ciclo do while finchè..
                 var numeroTabellina = Math.floor(Math.random() * (90 - 1 + 1) ) + 1; //Estraggo un numero casuale da 1 a 90
-                console.log("Numero Estratto: ", numeroTabellina);
 
                 if (!this.tabellina.includes(numeroTabellina)) { //Se il numero non è incluso nell'array dei numeri estratti
                     if(this.tabellina.length == 0) {
@@ -85,7 +82,6 @@ export default {
                             
                             console.log("Numero trovati: ", countJ);
                             if(countJ < 3) { //Se il contatore è minore di 3
-                                console.log("Pushato con trovati: ",numeroTabellina);
                                 this.tabellina.push(numeroTabellina); //Inserisco numero in array
                                 foundRange = true; //Segnalo che il Range numeri è stato trovato
                             } else if(countJ >= 3) {
@@ -131,7 +127,7 @@ export default {
                 var numPescatoTabellina = document.getElementById(newVal); //Cerco elemento con id = al numero pescato
                 numPescatoTabellina.classList.add("pescato"); //Aggiungo classe css "Pescato"
             }
-        }
+        },
     }
 }
 </script>
@@ -141,6 +137,12 @@ export default {
         border: 1px solid rgb(61, 110, 167);
         background-color:rgb(61, 110, 167);
         position: absolute;
+        top: 10%;
+        left: 0;
+    }
+
+    button:hover {
+        transform: scale(0.95);
     }
 
     #gen-tabella {
@@ -204,7 +206,7 @@ export default {
     .draggable-container {
         position: absolute;
         z-index: 9;
-        width: 25%;
+        width: 30%;
     }
 
     .draggable-header {

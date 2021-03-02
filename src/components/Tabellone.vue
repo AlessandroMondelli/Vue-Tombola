@@ -50,7 +50,7 @@ export default {
         border: 1px solid black;
         padding: 25px 30px;
         display: inline-block;
-        width: 55px;
+        width: 50px;
     }
 
     .pescato {

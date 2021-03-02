@@ -6,7 +6,7 @@
             <p class="last-estr-num"> {{ numeroEstratto }} </p>
         </div>
         <div id="restart">
-            <button @click="restartGame">Pulisci Tabellone</button>
+            <button v-if="gameStarted" @click="restartGame">Pulisci Tabellone</button>
         </div>
     </div>
 </template>
@@ -18,12 +18,15 @@ export default {
         return {
             numeroEstratto: '',
             numeriEstratti: [],
-            gameOver: false,
+            gameStarted: false,
             restart: false,
         }
   },
   methods: {
         estraiNumero() {
+            this.gameStarted = true; //Variabile che verifica che segnala la partita come iniziata
+            this.$emit('game-started', this.gameStarted); //Invio al padre segnale che la partita è iniziata
+
             var flag = false; //Flag che verifica estrazione di un numero non già uscito
 
             if(this.restart) { //Se restart è settato su "true"
@@ -45,21 +48,12 @@ export default {
         restartGame() {
             this.numeriEstratti = [];
             this.numeroEstratto = '';
+            this.gameStarted = false; //Variabile che verifica che segnala la partita come iniziata
+            this.$emit('game-started', this.gameStarted); //Invio al padre segnale che la partita è iniziata
             this.restart = true;
             this.$emit('restart-game', this.restart); //Invio segnale di restart
         }
-  },
-   watch: {
-         numeriEstratti: { //watch su array dei numeri estratti
-            handler: function () {
-                if(this.numeriEstratti.length == 90) { //se l'array raggiunge i 90 numeri
-                    this.gameOver = true; //Game over
-                    this.$emit('game-over', this.gameOver); //Invio numero a component
-                }
-            },
-            deep: true
-        }
-   }
+  }
 }
 </script>
 
@@ -69,14 +63,18 @@ export default {
 }
 
 #num-estr {
-    display: inline-block;
-    margin-left: 45px;
+    text-align: center;
+    display: block;
+    width: 24%;
+    border: 1px solid rgba(0, 0, 0, 0.363);
+    border-radius: 3px;
+    padding: 10px;
+    box-shadow: 0 2px 8px rgba(104, 104, 104, 0.288);
+    margin: 20px 0;
 }
 
 #restart {
-    display: inline-block;
-    position: relative;
-    left: 50%;
+    display: block;
 }
 
 #restart button {

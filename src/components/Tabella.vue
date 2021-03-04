@@ -1,16 +1,18 @@
 <template>
-    <div id="create-tabellina">
-    <button id="gen-tabella" @click="createTab(),genTab = !genTab" v-if="!gameStart && !genTab">Genera Tabella</button>
-    <div v-if="genTab" id="tabella" ref="draggableContainer" class="draggable-container">
-        <div id="tabellina"  class="draggable-header" @mousedown="dragMouseDown">
-            <button id="el-tabella" @click="tabellina = [],genTab = !genTab">Elimina Tabella</button>
-            <h2>La tua Tabella</h2>
-            <div id="tab-wrapper">
-                <div class="cella-tabellina" :id="numTabella" v-for="numTabella in tabellina" :key="numTabella">{{ numTabella }}</div>
+    <section id="create-tabellina">
+        <transition name="fade">    
+            <button id="gen-tabella" @click="createTab(),genTab = !genTab" v-if="!gameStart && !genTab">Genera Tabella</button>
+        </transition>
+        <div v-if="genTab" id="tabella" ref="draggableContainer" class="draggable-container">
+            <div id="tabellina"  class="draggable-header" @mousedown="dragMouseDown">
+                <button id="el-tabella" @click="tabellina = [],genTab = !genTab">Elimina Tabella</button>
+                <h2>La tua Tabella</h2>
+                <div id="tab-wrapper">
+                    <div class="cella-tabellina" :id="numTabella" v-for="numTabella in tabellina" :key="numTabella">{{ numTabella }}</div>
+                </div>
             </div>
         </div>
-    </div>
-    </div>
+    </section>
 </template>
 
 <script>

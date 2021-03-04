@@ -1,6 +1,6 @@
 <template>
-    <div id="generate-num">
-        <button @click="estraiNumero">Estrai un numero</button>
+    <section id="generate-num">
+        <button v-if="numeriEstratti.length < 90" @click="estraiNumero">Estrai un numero</button>
         <div v-if="numeroEstratto != ''" id="num-estr">
             <p class="last-estr-par">Ultimo numero estratto</p>
             <p class="last-estr-num"> {{ numeroEstratto }} </p>
@@ -8,7 +8,7 @@
         <div id="restart">
             <button v-if="gameStarted" @click="restartGame">Pulisci Tabellone</button>
         </div>
-    </div>
+    </section>
 </template>
 
 <script>

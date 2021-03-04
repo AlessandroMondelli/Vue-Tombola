@@ -1,7 +1,8 @@
 <template>
   <section>
-    <Header/>
-    <div id="container">
+    <Intro @intro-tabella="leaveIntro" v-if="intro"></Intro>
+    <div v-else id="container">
+      <Header/>
       <div id="in-game">
         <generate-number id="gen-numb" @estrai-numero="estraiNumeroTabellone" @restart-game="restartGame" @game-started="gameStarted"></generate-number>
         <tabella :numeroEstrattoTabellina="numeroEstrattoTabellone" :gameStart="gameStart"></tabella>
@@ -12,6 +13,7 @@
 </template>
 
 <script>
+import Intro from './components/Intro.vue';
 import Header from './components/Header.vue';
 import GenerateNumber from './components/GenerateNumber.vue';
 import Tabellone from './components/Tabellone.vue';
@@ -20,6 +22,7 @@ import Tabella from './components/Tabella.vue'
 export default {
   name: 'App',
   components: {
+    Intro,
     Header,
     GenerateNumber,
     Tabellone,
@@ -28,11 +31,15 @@ export default {
   data() {
     return {
       numeroEstrattoTabellone: '',
+      intro: true,
       gameStart: false,
       restart: false,
     }
   },
   methods: {
+    leaveIntro(val) { //Prendo valore Intro
+      this.intro = val;
+    },
     estraiNumeroTabellone(num) { //Prendo numero al click su "Estrai numero"(Dato preso dal component "GenerateNumber con emits")
       this.numeroEstrattoTabellone = num; //Assegno dato a variabile locale
     },
@@ -47,8 +54,11 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,300&display=swap');
+
 * {
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+  font-family: 'Lato', sans-serif;
 }
 
 html {
@@ -89,5 +99,12 @@ button {
 #tab {
   float: left;
   width: 70%;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .3s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>

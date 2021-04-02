@@ -82,7 +82,6 @@ export default {
                                 }
                             }  
                             
-                            console.log("Numero trovati: ", countJ);
                             if(countJ < 3) { //Se il contatore è minore di 3
                                 this.tabellina.push(numeroTabellina); //Inserisco numero in array
                                 foundRange = true; //Segnalo che il Range numeri è stato trovato
